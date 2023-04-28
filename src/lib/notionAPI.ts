@@ -39,9 +39,9 @@ const getTags = (tags: { name: string }[]) => {
 }
 
 
-export const getSinglePost = async (slug) => {
+export const getSinglePost = async (slug:string) => {
     const response = await notion.databases.query({
-        database_id: process.env.NOTION_DATABASE_ID,
+        database_id: process.env.NOTION_DATABASE_ID || '',
         filter: {
             property: 'Slug',
             formula: {
@@ -65,5 +65,5 @@ export const getSinglePost = async (slug) => {
 }
 
 export const getPostsForTopPage = async () => {
-    
+
 }

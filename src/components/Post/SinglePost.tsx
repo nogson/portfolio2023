@@ -6,7 +6,7 @@ const SinglePost: FC<{ post: Post }> = ({post}) => {
     const {title, description, slug, tags} = post
     return <>
         <article className="border p-4 mb-4">
-            <Link href={`/posts/${slug}`}>
+            <Link href={`/posts/detail/${slug}`}>
                 <div>{title}</div>
                 <div>{description}</div>
                 <div>{tags}</div>

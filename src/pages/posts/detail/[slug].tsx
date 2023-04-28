@@ -10,8 +10,6 @@ import styles from '@/styles/PostDetail.module.scss'
 export const getStaticPaths: GetStaticPaths = async () => {
     const allPosts = await getAllPosts()
     const paths = allPosts.map(({slug}) => ({params: {slug}}))
-    console.log(paths)
-
     return {
         paths,
         fallback: 'blocking'
@@ -30,13 +28,13 @@ export const getStaticProps: GetStaticProps = async ({params}: GetStaticPropsCon
 }
 
 
-const Post = ({post}) => {
+const Post = ({post}:any) => {
     console.log(post)
     return (
         <section className={styles.post}>
             <h2>{post.metadata.title}</h2>
             <span>{post.metadata.date}</span>
-            {post.metadata.tags.map((tag) => (
+            {post.metadata.tags.map((tag:string) => (
                 <p key={tag}>{tag}</p>
             ))}
             <div>
