@@ -2,8 +2,10 @@ import React from 'react'
 import {GetStaticProps, GetStaticPaths, GetStaticPropsContext} from 'next';
 import {getAllPosts, getSinglePost} from '@/lib/notionAPI'
 import {ReactMarkdown} from 'react-markdown/lib/react-markdown'
+import remarkGfm from 'remark-gfm'
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
 import {dracula} from 'react-syntax-highlighter/dist/cjs/styles/prism'
+import styles from '@/styles/PostDetail.module.scss'
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const allPosts = await getAllPosts()
@@ -31,7 +33,7 @@ export const getStaticProps: GetStaticProps = async ({params}: GetStaticPropsCon
 const Post = ({post}) => {
     console.log(post)
     return (
-        <section id="post">
+        <section className={styles.post}>
             <h2>{post.metadata.title}</h2>
             <span>{post.metadata.date}</span>
             {post.metadata.tags.map((tag) => (
@@ -39,6 +41,7 @@ const Post = ({post}) => {
             ))}
             <div>
                 <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
                     components={{
                         code({node, inline, className, children, ...props}) {
                             const match = /language-(\w+)/.exec(className || '')
