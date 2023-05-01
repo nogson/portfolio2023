@@ -1,5 +1,4 @@
 import {Client} from '@notionhq/client'
-import {PageObjectResponse, PartialPageObjectResponse} from "@notionhq/client/build/src/api-endpoints";
 import {PostResult} from '@/types/global'
 import {NotionToMarkdown} from 'notion-to-md'
 
@@ -12,9 +11,9 @@ const n2m = new NotionToMarkdown({notionClient: notion})
 export const getAllPosts = async () => {
     const posts = await notion.databases.query({
         database_id: process.env.NOTION_DATABASE_ID || '',
-        page_size: 100
+        page_size: 2,
     })
-
+    console.log(posts)
     const allPosts = posts.results
 
     return allPosts.map((post) => {
@@ -57,7 +56,6 @@ export const getSinglePost = async (slug:string) => {
 
     const mbBlocks = await n2m.pageToMarkdown(page.id)
     const mdString = n2m.toMarkdownString(mbBlocks)
-
     return {
         metadata,
         markdown: mdString

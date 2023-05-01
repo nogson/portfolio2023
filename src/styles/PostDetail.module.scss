@@ -1,4 +1,15 @@
-.post {
+.postMeta {
+  h2 {
+    font-size: var(--font-xl);
+    font-weight: bold;
+  }
+}
+
+.postBody {
+  h2 {
+    font-size: var(--font-l);
+    font-weight: bold;
+  }
   table {
     border: 1px solid #CCC;
     td,th {
