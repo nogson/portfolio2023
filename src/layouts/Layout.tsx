@@ -1,11 +1,15 @@
-import React, {FC} from 'react'
-import HeaderTemplate from '@/components/HeaderTemplate/HeaderTemplete'
+import  {FC, ReactNode} from 'react'
+import Header from '@/components/Header/Header'
 import styles from '@/styles/Layout.module.scss'
 
-const Layout: FC<{ children: React.ReactNode }> = ({children}) => {
+type Props = {
+    children?: ReactNode;
+}
+
+const Layout: FC<Props> = ({children}) => {
     return (
         <div>
-            <HeaderTemplate/>
+            <Header/>
             <div className={`mt-8 ml-auto mr-auto ${styles.content}`}>
                 {children}
             </div>

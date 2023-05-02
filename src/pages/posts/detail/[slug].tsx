@@ -1,6 +1,6 @@
 import React from 'react'
 import {GetStaticProps, GetStaticPaths, GetStaticPropsContext} from 'next';
-import {getAllPosts, getSinglePost} from '@/lib/notionAPI'
+import {getSinglePost} from '@/lib/notionAPI'
 import {ReactMarkdown} from 'react-markdown/lib/react-markdown'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
