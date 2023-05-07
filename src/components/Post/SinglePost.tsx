@@ -1,6 +1,6 @@
 import React, {FC} from 'react'
 import {Post} from '@/types/global'
-import Link from "next/link";
+import Link from 'next/link'
 
 const SinglePost: FC<{ post: Post }> = ({post}) => {
     const {title, description, slug, tags} = post
