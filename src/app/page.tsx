@@ -10,22 +10,9 @@ import React from "react";
 
 const inter = Inter({subsets: ['latin']})
 
-type Props = {
-    allPosts: Post[]
-}
-
-export const getStaticProps: GetStaticProps = async () => {
+export default async function Home() {
     const allPosts = await getAllPosts()
 
-    return {
-        props: {
-            allPosts
-        },
-        revalidate: 60 * 60 * 24
-    }
-}
-
-export default function Home({allPosts}: Props) {
     return (
         <>
             <main className="container w-full mt-16">
