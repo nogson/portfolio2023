@@ -1,12 +1,11 @@
 'use client'
 
 import {Canvas} from '@react-three/fiber'
-import {useLoader, LoaderReturnType, LoaderProto} from '@react-three/fiber'
-import {PerspectiveCamera, OrthographicCamera, OrbitControls} from '@react-three/drei'
+import {useLoader} from '@react-three/fiber'
+import {OrthographicCamera, OrbitControls} from '@react-three/drei'
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
-import {Suspense} from 'react'
 import {DRACOLoader} from 'three/examples/jsm/loaders/DRACOLoader'
-
+import {useControls} from 'leva'
 
 const Model = () => {
 
@@ -44,7 +43,41 @@ const Model = () => {
 //     )
 // }
 
+// new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
+
+
 export default function Hero() {
+    const cameraCtl = useControls('Camera Controller', {
+        zoom: 50,
+        top: 0,
+        bottom: -100,
+        left: 100,
+        right: -100,
+        x: 200,
+        y: 200,
+        z: 200
+    })
+
+    const ambientCtl = useControls('Ambient Light', {
+        visible: false,
+        intensity: {
+            value: 1.0,
+            min: 0,
+            max: 1.0,
+            step: 0.1,
+        },
+    })
+
+    const directionalCtl = useControls('Directional Light', {
+        visible: true,
+        position: {
+            x: 3.3,
+            y: 1.0,
+            z: 4.4,
+        },
+        castShadow: true,
+    })
+
     return (
         <Canvas
             shadows
@@ -54,17 +87,29 @@ export default function Hero() {
                 background: '#FFF',
             }}
         >
-            <ambientLight/>
+            <ambientLight
+                visible={ambientCtl.visible}
+                intensity={ambientCtl.intensity}
+            />
+            <directionalLight
+                visible={directionalCtl.visible}
+                position={[
+                    directionalCtl.position.x,
+                    directionalCtl.position.y,
+                    directionalCtl.position.z,
+                ]}
+                castShadow={directionalCtl.castShadow}
+            />
             <OrthographicCamera
                 makeDefault
-                zoom={1}
-                top={0}
-                bottom={-200}
-                left={200}
-                right={-200}
+                zoom={cameraCtl.zoom}
+                top={cameraCtl.top}
+                bottom={cameraCtl.bottom}
+                left={cameraCtl.left}
+                right={cameraCtl.right}
                 near={1}
                 far={1000}
-                position={[0, 0, 200]}
+                position={[cameraCtl.x, cameraCtl.y, cameraCtl.z]}
             />
             <pointLight position={[10, 10, 10]}/>
             <Model/>
