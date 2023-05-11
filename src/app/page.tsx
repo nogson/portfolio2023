@@ -11,16 +11,13 @@ export default async function Home() {
 
     return (
         <>
-            <main className="container w-full mt-16">
-                <h1 className="test-5xl font-medium text-center mb-16 bg-amber-300">
-                    Notion Blog
-                </h1>
+            <main className="container w-full">
                 <Hero />
-                {allPosts.map((post) => (
-                    <div className="mx-4" key={post.id}>
-                        <SinglePost post={post}/>
-                    </div>
-                ))}
+                {/*{allPosts.map((post) => (*/}
+                {/*    <div className="mx-4" key={post.id}>*/}
+                {/*        <SinglePost post={post}/>*/}
+                {/*    </div>*/}
+                {/*))}*/}
             </main>
         </>
     )
