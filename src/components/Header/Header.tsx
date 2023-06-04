@@ -1,22 +1,46 @@
+'use client'
 import React from 'react'
 import Link from 'next/link'
+import styled from 'styled-components'
+
+const StyledHeader = styled.header`
+  padding: var(--size-l);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  h1 {
+    margin-right: var(--size-l);
+    font-weight: 500;
+    font-size: var(--font-l);
+  }
+`
+
+const StyledNav = styled.nav`
+    ul {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      li {
+        margin-left: var(--size-l);
+      }
+    }
+`
+
 
 const HeaderTemplate = () => {
     return (
-        <header className="fixed z-10 top-0 left-0">
-            <div className="flex align-middle">
-                <h1 className="font-bold">
-                    <Link href={'/'}>Satofaction</Link>
-                </h1>
-                <div>
-                    <ul className="flex items-center justify-between bg-amber-300">
-                        <li><Link href={'/'}>Home</Link></li>
-                        <li><Link href={'/'}>Home</Link></li>
-                        <li><Link href={'/'}>Home</Link></li>
-                    </ul>
-                </div>
-            </div>
-        </header>
+        <StyledHeader>
+            <h1>
+                <Link href={'/'}>Satofaction</Link>
+            </h1>
+            <StyledNav>
+                <ul>
+                    <li><Link href={'/'}>Home</Link></li>
+                    <li><Link href={'/posts'}>Posts</Link></li>
+                </ul>
+            </StyledNav>
+        </StyledHeader>
     )
 }
 

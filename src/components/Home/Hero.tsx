@@ -1,45 +1,44 @@
 'use client'
 import {Suspense} from 'react'
 import {Canvas} from '@react-three/fiber'
-import {OrthographicCamera, PerspectiveCamera, OrbitControls,useHelper} from '@react-three/drei'
-import {useControls} from 'leva'
+import {OrthographicCamera, PerspectiveCamera, OrbitControls, useHelper} from '@react-three/drei'
+import {useControls, } from 'leva'
 
-import Lights from './Light'
-import Model from './Model'
-import Box from './Box'
+import Lights from '@/components/Home/Light'
+import Card from '@/components/Home/Card'
+import Box from '@/components/Home/ThumbnailBox'
 
-
-
-// new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
-
-
-
+import Town from '@/components/Home/Town'
 
 export default function Hero() {
     return (
         <Suspense fallback={<span>loading...</span>}>
             <Canvas
                 shadows
+                flat
                 style={{
                     width: '100vw',
                     height: '100vh',
                     background: '#FFF',
                 }}
             >
+
                 <Lights/>
+                <fog attach="fog" color={'#fff'} near={1} far={100} />
                 <PerspectiveCamera
                     makeDefault
                     zoom={1}
-                    aspect={1200 / 600}
                     near={1}
                     far={100}
-                    fav={50}
-                    position={[0, 0, 20]}
+                    position={[-20, 30, 20]}
                 />
-                <Box />
-                {/*<Model/>*/}
+                <Card title={'Typescriptの型で悩んだとき用小ネタメモ'} position={[0,1,0]} geometry={[10, 0.1, 10]} />
+                <Card title={'Docker初心者によるDockerfile、Docker Composeのメモ'} position={[6,1,0]} geometry={[10, 0.1, 10]} />
+
+                {/*<Card position={[0,1,0]}/>*/}
+                <Box geometry={[200, 0.1, 200]} material={{color: '#CCC'}}/>
                 <OrbitControls enablePan={true} enableZoom={true} enableRotate={true}/>
-                <axesHelper args={[10]} />
+                <axesHelper args={[100]}/>
             </Canvas>
         </Suspense>)
 }

@@ -1,6 +1,7 @@
-import {Client} from '@notionhq/client'
+import {Client,} from '@notionhq/client'
 import {PostResult} from '@/types/global'
 import {NotionToMarkdown} from 'notion-to-md'
+import axios from 'axios'
 
 const notion = new Client({
     auth: process.env.NOTION_TOKEN
@@ -9,17 +10,20 @@ const notion = new Client({
 const n2m = new NotionToMarkdown({notionClient: notion})
 
 export const getAllPosts = async () => {
-    const posts = await notion.databases.query({
-        database_id: process.env.NOTION_DATABASE_ID || '',
-        page_size: 2,
-    })
-    console.log(posts)
-    const allPosts = posts.results
 
-    return allPosts.map((post) => {
-        // TODO unknownをどうするか
-        return getPageMetaData(post as unknown as PostResult)
-    })
+    const res = await axios.get('http://localhost:3003/posts')
+    return res.data
+
+    // const posts = await notion.databases.query({
+    //     database_id: process.env.NOTION_DATABASE_ID || '',
+    //     page_size: 2,
+    // })
+    // const allPosts = posts.results
+    //
+    // return allPosts.map((post) => {
+    //     // TODO unknownをどうするか
+    //     return getPageMetaData(post as unknown as PostResult)
+    // })
 }
 
 const getPageMetaData = (post: PostResult) => {
@@ -38,7 +42,7 @@ const getTags = (tags: { name: string }[]) => {
 }
 
 
-export const getSinglePost = async (slug:string) => {
+export const getSinglePost = async (slug: string) => {
     const response = await notion.databases.query({
         database_id: process.env.NOTION_DATABASE_ID || '',
         filter: {
