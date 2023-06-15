@@ -3,12 +3,11 @@ import React, {FC, useEffect, useRef, useState, createRef, MutableRefObject} fro
 import {Post} from '@/types/global'
 import styled from 'styled-components'
 import html2canvas from 'html2canvas'
-import ThumbnailBox from '@/components/Home/ThumbnailBox'
-import SinglePostCube from "@/components/Post/SinglePostCube";
+import PostsCanvas from '@/components/Post/PostsCanvas'
 
 const PostElmWrapperStyled = styled.div`
   position: absolute;
-  top: -10000px;
+  left: -10000px;
 `
 
 const PostElmStyled = styled.div`
@@ -38,7 +37,7 @@ const PostElmStyled = styled.div`
 `
 
 
-const createTextuers = async (refs: React.MutableRefObject<React.MutableRefObject<HTMLDivElement | null>[]>) => {
+const createTextures = async (refs: React.MutableRefObject<React.MutableRefObject<HTMLDivElement | null>[]>) => {
     const promise = refs.current.map(ref => html2canvas(ref.current as HTMLDivElement))
     const canvasArr = await Promise.all(promise)
     return canvasArr.map(canvas => canvas.toDataURL())
@@ -67,7 +66,7 @@ const CanvasWrapper: FC<{ posts: Post[] }> = ({posts}): JSX.Element => {
 
     useEffect(() => {
         (async () => {
-            const res = await createTextuers(refs)
+            const res = await createTextures(refs)
             setTextures(res)
         })()
     }, [])
@@ -76,7 +75,7 @@ const CanvasWrapper: FC<{ posts: Post[] }> = ({posts}): JSX.Element => {
         return <PostElmWrapperStyled>{listItems(posts)}</PostElmWrapperStyled>
     }
 
-    return <SinglePostCube posts={posts} textures={textures} />
+    return <PostsCanvas posts={posts} textures={textures} />
 
 }
 
