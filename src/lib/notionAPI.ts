@@ -11,19 +11,19 @@ const n2m = new NotionToMarkdown({notionClient: notion})
 
 export const getAllPosts = async () => {
 
-    const res = await axios.get('http://localhost:3003/posts')
-    return res.data
-
-    // const posts = await notion.databases.query({
-    //     database_id: process.env.NOTION_DATABASE_ID || '',
-    //     page_size: 2,
-    // })
-    // const allPosts = posts.results
-    //
-    // return allPosts.map((post) => {
-    //     // TODO unknownをどうするか
-    //     return getPageMetaData(post as unknown as PostResult)
-    // })
+    // const res = await axios.get('http://localhost:3003/posts')
+    // return res.data
+    console.log(process.env.NOTION_DATABASE_ID)
+    const posts = await notion.databases.query({
+        database_id: process.env.NOTION_DATABASE_ID || '',
+        page_size: 2,
+    })
+    const allPosts = posts.results
+    
+    return allPosts.map((post) => {
+        // TODO unknownをどうするか
+        return getPageMetaData(post as unknown as PostResult)
+    })
 }
 
 const getPageMetaData = (post: PostResult) => {

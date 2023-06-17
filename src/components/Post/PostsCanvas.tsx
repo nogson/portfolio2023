@@ -16,9 +16,13 @@ type SinglePostCubeProps = {
 const SinglePostCube: FC<SinglePostCubeProps> = ({ posts, textures }) => {
   const [activeId, setActiveId] = useState<string|null>(null)
   const getPosition = (index: number): [number, number, number] => {
-    const x = (index % 6) + (index % 6) * 1 - 5
-    const y = (Math.floor(index / 6) + Math.floor(index / 6) * 1) * -1 + 1
+    const maxCol = posts.length >= 6 ? 6 : posts.length  
+    const row = Math.floor(index / maxCol)
+    
+    const x = (index % maxCol) + (index % maxCol) * 1 - (maxCol-1)
+    const y = (row + row * 1) * -1 + 1
     const z = 0
+    console.log(x, y, z)
     return [x, y, z]
   }
 
