@@ -46,7 +46,6 @@ const createTextures = async (refs: React.MutableRefObject<React.MutableRefObjec
 const CanvasWrapper: FC<{ posts: Post[] }> = ({posts}): JSX.Element => {
     const [textures, setTextures] = useState<string[]>()
     const refs = useRef<React.MutableRefObject<HTMLDivElement | null>[]>([])
-    console.log(posts)
     const listItems = (posts: Post[]): JSX.Element[] => {
         return posts.map((post, index) => {
             refs.current[index] = createRef<HTMLDivElement | null>()
@@ -66,6 +65,7 @@ const CanvasWrapper: FC<{ posts: Post[] }> = ({posts}): JSX.Element => {
 
     useEffect(() => {
         (async () => {
+            // postsから受け取ったタイトルなどの情報を元に、html2canvasでcanvasを生成し、そのcanvasをtextureとしてThree.jsに渡す
             const res = await createTextures(refs)
             setTextures(res)
         })()

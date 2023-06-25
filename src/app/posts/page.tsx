@@ -5,7 +5,6 @@ import CanvasWrapper from '@/components/Post/CanvasWrapper'
 
 export default async function Home() {
     const posts: Post[] = await getAllPosts()
-
     return (
         <>
             <StyledPostMain>

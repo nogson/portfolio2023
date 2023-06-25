@@ -22,7 +22,6 @@ const SinglePostCube: FC<SinglePostCubeProps> = ({ posts, textures }) => {
     const x = (index % maxCol) + (index % maxCol) * 1 - (maxCol-1)
     const y = (row + row * 1) * -1 + 1
     const z = 0
-    console.log(x, y, z)
     return [x, y, z]
   }
 
@@ -57,6 +56,7 @@ const SinglePostCube: FC<SinglePostCubeProps> = ({ posts, textures }) => {
           texture={textures[index]}
           setActiveId={setActiveId}
           active={activeId === post.id}
+          post={post}
         />
       ))}
       <OrbitControls enablePan={false} enableZoom={false} enableRotate={false} />

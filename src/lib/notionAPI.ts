@@ -13,10 +13,10 @@ export const getAllPosts = async () => {
 
     // const res = await axios.get('http://localhost:3003/posts')
     // return res.data
-    console.log(process.env.NOTION_DATABASE_ID)
+    
     const posts = await notion.databases.query({
         database_id: process.env.NOTION_DATABASE_ID || '',
-        page_size: 2,
+        page_size: 10,
     })
     const allPosts = posts.results
     

@@ -4,21 +4,25 @@ import { useRef, useState } from 'react'
 import { useSpring, animated } from '@react-spring/three'
 import { Mesh, Vector3 } from 'three'
 import { previewData } from 'next/dist/client/components/headers'
+import { Post } from '@/types/global'
+import { getThumbnailPath } from '@/lib/utils/post'
 
 type Props = {
-    id:string;
+  id: string;
   geometry: [x: number, y: number, z: number];
   material?: { color: string };
   position: [x: number, y: number, z: number];
   rotation?: [x: number, y: number, z: number];
   texture: string;
   active?: boolean;
-  setActiveId: (id:string|null) => void;
+  setActiveId: (id: string | null) => void;
+  post: Post;
 };
 
 export default function ThumbnailBox(props: Props) {
   const ref = useRef<any>()
-    const animationVal = Math.random() * 0.03 + 0.005
+  const [hovered, setHovered] = useState(false)
+  const animationVal = Math.random() * 0.03 + 0.005
   const { position } = useSpring<{ position: any }>({
     to: async (next) => {
       if (props.active) {
@@ -35,28 +39,92 @@ export default function ThumbnailBox(props: Props) {
   })
 
   useFrame(() => {
-    if(!props.active) {
-        ref.current.rotation.y += animationVal
-        ref.current.rotation.z += animationVal
-    }else {
-        ref.current.rotation.y = 0
-        ref.current.rotation.z = 0
+    if (hovered) {
+      return
+    }
+    if (!props.active) {
+      ref.current.rotation.y += animationVal
+      ref.current.rotation.z += animationVal
+    } else {
+      ref.current.rotation.y = 0
+      ref.current.rotation.z = 0
     }
   })
 
+  const getTextures = ():string[] => {
+    // props.post.tagsからblogという値を削除する
+    const tags = props.post.tags.filter((tag) => tag !== 'blog')
+    let textures = [props.texture, props.texture]
+
+    // タグが1つの場合
+    if (tags.length === 1) {
+      const tex = [
+        getThumbnailPath(tags[0]),
+        getThumbnailPath(tags[0]),
+        getThumbnailPath(tags[0]),
+        getThumbnailPath(tags[0]),
+      ]
+      textures = tex.concat(textures)
+    } else if (tags.length === 2) {
+      const tex = [
+        getThumbnailPath(tags[0]),
+        getThumbnailPath(tags[1]),
+        getThumbnailPath(tags[0]),
+        getThumbnailPath(tags[1]),
+      ]
+      textures = tex.concat(textures)
+    } else if (tags.length === 3) {
+      const tex = [
+        getThumbnailPath(tags[0]),
+        getThumbnailPath(tags[1]),
+        getThumbnailPath(tags[2]),
+        getThumbnailPath(tags[0]),
+      ]
+      textures = tex.concat(textures)
+    } else if (tags.length === 4) {
+      const tex = [
+        getThumbnailPath(tags[0]),
+        getThumbnailPath(tags[1]),
+        getThumbnailPath(tags[2]),
+        getThumbnailPath(tags[3]),
+      ]
+      textures = tex.concat(textures)
+    } else {
+      const tex = [
+        getThumbnailPath(null),
+        getThumbnailPath(null),
+        getThumbnailPath(null),
+        getThumbnailPath(null),
+      ]
+      textures = tex.concat(textures)
+    }
+
+    return textures
+  }
+
+  const texturePath:string[] = getTextures()
+
   const textures = [
-    useTexture('/images/docker_thumb.png'), // 右側
-    useTexture('/images/docker_thumb.png'), // 左側
-    useTexture('/images/docker_thumb.png'), // 上側
-    useTexture('/images/docker_thumb.png'), // 下側
-    useTexture(props.texture), // 前側
-    useTexture(props.texture), // 後側
+    useTexture(texturePath[0]), // 右側
+    useTexture(texturePath[1]), // 左側
+    useTexture(texturePath[2]), // 上側
+    useTexture(texturePath[3]), // 下側
+    useTexture(texturePath[4]), // 前側
+    useTexture(texturePath[5]), // 後側
   ]
 
   const onClick = (event: ThreeEvent<MouseEvent>) => {
-    props.setActiveId(props.active ? null :props.id)
-}
+    props.setActiveId(props.active ? null : props.id)
+    // hoveredもfalseにする
+    // 遅延させないと、hoveredがtrueのままになってしまう
+    setTimeout(() => {
+      setHovered(false)
+    }, 500)
+  }
 
+  const toggleHover = () => {
+    setHovered(!hovered)
+  }
 
   return (
     <animated.mesh
@@ -65,6 +133,8 @@ export default function ThumbnailBox(props: Props) {
       castShadow={true}
       receiveShadow={true}
       onClick={onClick}
+      onPointerOver={toggleHover}
+      onPointerOut={toggleHover}
     >
       <Box args={props.geometry}>
         {textures.map((texture, index) => (
